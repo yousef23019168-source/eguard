@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>E-Guard – Smarter Care. Safer Living.</title>
+<meta name="description" content="E-Guard is a HealthTech project in development: a wearable, camera and mobile app system designed to help families stay aware of an elderly loved one’s safety and health.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* ============ EDIT HERE: colors, fonts ============ */
+:root{
+  --navy:#0b2545; --navy-2:#13376a; --teal:#14b8a6; --teal-d:#0d8f81;
+  --bg:#f3f7fa; --surface:#ffffff; --text:#14263d; --muted:#51627a; --line:#dbe5ee;
+  --head:'Sora',system-ui,sans-serif; --body:'Figtree',system-ui,sans-serif;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1626;--surface:#10223a;--text:#e8f0f8;--muted:#9fb2c8;--line:#1f3553;--teal-d:#2dd4bf}}
+:root[data-theme="dark"]{--bg:#0a1626;--surface:#10223a;--text:#e8f0f8;--muted:#9fb2c8;--line:#1f3553;--teal-d:#2dd4bf}
+html{scroll-behavior:smooth;scroll-padding-top:calc(76px + env(safe-area-inset-top,0px))}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.65 var(--body)}
+h1,h2,h3{font-family:var(--head);line-height:1.15;margin:0 0 .5em;letter-spacing:-.01em}
+h2{font-size:clamp(1.8rem,4vw,2.6rem)} h3{font-size:1.12rem}
+p{margin:0 0 1em;max-width:68ch}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+section{padding:88px 0}
+.lead{color:var(--muted);font-size:1.1rem}
+.grid{display:grid;gap:20px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 8px 24px rgba(11,37,69,.06)}
+.card p{color:var(--muted);margin:0}
+.ico{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,var(--navy),var(--navy-2));display:grid;place-items:center;margin-bottom:16px}
+.ico svg{width:24px;height:24px;stroke:#5eead4;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tag{display:inline-block;font-size:.76rem;font-weight:600;padding:3px 10px;border-radius:99px;background:rgba(20,184,166,.14);color:var(--teal-d);margin-top:14px}
+.btn{display:inline-block;background:var(--teal);color:#032b27;font-weight:600;text-decoration:none;padding:14px 26px;border-radius:99px;border:0;cursor:pointer;font:600 1rem var(--body);box-shadow:0 8px 20px rgba(20,184,166,.35);transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.4);box-shadow:none}
+/* nav */
+header{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(11,37,69,.92);backdrop-filter:blur(10px);padding-top:env(safe-area-inset-top,0px)}
+nav{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font:700 1.25rem var(--head)}
+.logo svg{width:34px;height:34px}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+nav ul a{color:#cfe0f2;text-decoration:none;font-size:.95rem;font-weight:500}
+nav ul a:hover{color:#5eead4}
+#menu{display:none;background:none;border:0;color:#fff;font-size:1.7rem;cursor:pointer}
+@media(max-width:860px){
+  #menu{display:block}
+  nav ul{display:none;position:absolute;top:68px;left:0;right:0;background:var(--navy);flex-direction:column;padding:12px 22px 22px;gap:14px}
+  nav ul.open{display:flex}
+}
+/* hero */
+.hero{background:radial-gradient(900px 500px at 80% 20%,rgba(20,184,166,.28),transparent 60%),linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff;padding:150px 0 90px}
+.hero .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);margin-bottom:.35em}
+.hero p{color:#c3d5e8;font-size:1.15rem}
+.badge{display:inline-block;border:1px solid rgba(94,234,212,.5);color:#5eead4;padding:5px 14px;border-radius:99px;font-size:.85rem;margin-bottom:22px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px}
+.hero svg.art{width:100%;height:auto}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+/* flow */
+.steps{counter-reset:s;display:grid;gap:14px}
+.step{display:flex;gap:18px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 22px}
+.step::before{counter-increment:s;content:counter(s);flex:none;width:36px;height:36px;border-radius:50%;background:var(--navy);color:#5eead4;display:grid;place-items:center;font:600 1rem var(--head)}
+.step p{margin:0;color:var(--muted)} .step b{display:block;font-family:var(--head);font-size:1rem}
+/* alerts */
+.lv{border-left:6px solid}
+.lv.n{border-color:#22c55e}.lv.w{border-color:#f59e0b}.lv.e{border-color:#ef4444}
+/* band */
+.band{background:linear-gradient(160deg,var(--navy),var(--navy-2));color:#fff}
+.band .lead,.band p{color:#c3d5e8}
+.band .card{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);box-shadow:none}
+.band .card p{color:#c3d5e8}
+.note{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);border-radius:14px;padding:16px 20px;color:var(--text)}
+/* team */
+.avatar{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--navy-2));margin-bottom:14px;display:grid;place-items:center;color:#fff;font:700 1.6rem var(--head);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+/* form */
+form{display:grid;gap:14px}
+input,textarea{width:100%;padding:13px 16px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:1rem var(--body)}
+label{font-weight:600;font-size:.92rem}
+footer{background:var(--navy);color:#b7c9dd;padding:44px 0 36px;font-size:.92rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between}
+footer a{color:#5eead4;text-decoration:none;margin-right:16px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+.pulse{animation:pulse 2.4s infinite}
+</style>
+</head>
+<body>
+
+<!-- ============ NAVIGATION ============ -->
+<header><div class="wrap"><nav aria-label="Main">
+  <a class="logo" href="#home" aria-label="E-Guard home">
+    <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 34 8v11c0 9-6 15-14 18C12 34 6 28 6 19V8z" fill="#14b8a6"/><path d="M10 21h6l2-5 4 10 2-5h6" stroke="#0b2545" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>E-Guard</a>
+  <button id="menu" aria-label="Open menu" aria-expanded="false">☰</button>
+  <ul id="links">
+    <li><a href="#about">About</a></li><li><a href="#problem">Problem</a></li><li><a href="#solution">Solution</a></li>
+    <li><a href="#how">How it works</a></li><li><a href="#features">Features</a></li><li><a href="#tech">Technology</a></li>
+    <li><a href="#vision">Vision</a></li><li><a href="#team">Team</a></li><li><a href="#contact">Contact</a></li>
+  </ul>
+</nav></div></header>
+
+<main>
+<!-- ============ 1. HERO ============ -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div>
+      <span class="badge">HealthTech · Currently under development</span>
+      <h1>Smarter Care. Safer Living.</h1>
+      <p>E-Guard is a proposed smart monitoring system that combines a wearable bracelet, AI-assisted camera monitoring and a mobile app. It is designed to help elderly people live more independently while their families stay informed.</p>
+      <div class="cta"><a class="btn" href="#solution">Explore Our Solution</a><a class="btn ghost" href="#contact">Get in touch</a></div>
+    </div>
+    <!-- Hero illustration (inline SVG, editable) -->
+    <svg class="art" viewBox="0 0 480 420" role="img" aria-label="Illustration: a wearable bracelet and a camera connected to a family phone app">
+      <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#14b8a6"/><stop offset="1" stop-color="#1d4f91"/></linearGradient></defs>
+      <circle cx="240" cy="210" r="170" fill="none" stroke="#5eead4" stroke-opacity=".25" stroke-dasharray="4 8"/>
+      <g stroke="#5eead4" stroke-width="2" stroke-dasharray="6 6" fill="none" class="pulse"><path d="M110 115 205 175"/><path d="M370 115 275 175"/><path d="M240 300V260"/></g>
+      <!-- phone -->
+      <rect x="185" y="150" width="110" height="190" rx="20" fill="#0d2a4f" stroke="#5eead4" stroke-width="2.5"/>
+      <rect x="196" y="170" width="88" height="40" rx="9" fill="url(#g)"/><text x="240" y="195" fill="#fff" font-size="13" text-anchor="middle" font-family="Sora,sans-serif">All normal</text>
+      <rect x="196" y="220" width="88" height="26" rx="8" fill="#ffffff" fill-opacity=".1"/><rect x="196" y="254" width="88" height="26" rx="8" fill="#ffffff" fill-opacity=".1"/><rect x="196" y="288" width="88" height="26" rx="8" fill="#ffffff" fill-opacity=".1"/>
+      <!-- bracelet -->
+      <rect x="55" y="60" width="110" height="80" rx="26" fill="#13376a" stroke="#5eead4" stroke-width="2.5"/>
+      <rect x="72" y="76" width="76" height="48" rx="14" fill="#0b2545"/><path d="M80 102h14l6-14 10 28 7-14h12" stroke="#5eead4" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- camera -->
+      <rect x="315" y="65" width="110" height="68" rx="16" fill="#13376a" stroke="#5eead4" stroke-width="2.5"/>
+      <circle cx="370" cy="99" r="20" fill="#0b2545" stroke="#5eead4" stroke-width="3"/><circle cx="370" cy="99" r="7" fill="#5eead4"/>
+      <!-- family -->
+      <circle cx="90" cy="320" r="22" fill="#5eead4" fill-opacity=".85"/><path d="M52 385c0-26 17-42 38-42s38 16 38 42z" fill="#5eead4" fill-opacity=".85"/>
+      <circle cx="390" cy="330" r="16" fill="#fff" fill-opacity=".8"/><path d="M362 385c0-20 13-32 28-32s28 12 28 32z" fill="#fff" fill-opacity=".8"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ 2. ABOUT ============ -->
+<section id="about"><div class="wrap">
+  <h2>About E-Guard</h2>
+  <p class="lead">E-Guard is an early-stage project in the fields of HealthTech, elderly care, AI and IoT. It is designed to help older adults live more safely and independently, while keeping their families informed about their well-being.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Our vision</h3><p>To create a safer environment for elderly individuals by combining smart technology, health monitoring and family connectivity.</p></div>
+    <div class="card"><h3>Our mission</h3><p>To reduce the risks of elderly people living alone by giving families timely information, health monitoring and emergency notifications.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ 3. PROBLEM ============ -->
+<section id="problem" style="background:var(--surface)"><div class="wrap">
+  <h2>The problem</h2>
+  <p class="lead">Many elderly people spend long hours alone while relatives work or live elsewhere.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Unnoticed emergencies</h3><p>Sudden falls or medical events may go unseen for a long time.</p></div>
+    <div class="card"><h3>No constant oversight</h3><p>Families cannot watch over a loved one around the clock.</p></div>
+    <div class="card"><h3>Manual checking</h3><p>Traditional methods rely on frequent phone calls and visits.</p></div>
+    <div class="card"><h3>Delayed response</h3><p>The later an emergency is detected, the greater the risk may be.</p></div>
+    <div class="card"><h3>Constant worry</h3><p>Without reliable information, families often feel anxious.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ 4. SOLUTION ============ -->
+<section id="solution"><div class="wrap">
+  <h2>Our solution</h2>
+  <p class="lead">Our proposed solution brings three components together in one connected system.</p>
+  <div class="grid g3">
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="4"/><path d="M9 12h2l1-2 1 4 1-2h1"/></svg></div>
+      <h3>Smart wearable bracelet</h3><p>Designed to collect health readings such as blood oxygen saturation (SpO2) and, depending on the selected sensor, blood pressure and other vital signs. Readings are sent to the app.</p><span class="tag">In development</span></div>
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="m16 11 5-3v8l-5-3"/></svg></div>
+      <h3>AI-powered camera monitoring</h3><p>Aims to help detect falls, unusual movement or inactivity, and potential emergencies. Camera access follows defined permissions and privacy rules.</p><span class="tag">Planned</span></div>
+    <div class="card"><div class="ico"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg></div>
+      <h3>Flutter mobile app</h3><p>The central interface connecting elderly users, families and doctors, with a different experience for each role.</p><span class="tag">In development</span></div>
+  </div>
+
+  <h3 style="margin-top:56px;font-size:1.5rem">Three roles, one app</h3>
+  <div class="grid g3">
+    <div class="card"><h3>Elderly user</h3><p>View personal health readings, receive notifications, reach emergency help options and manage approved family connections.</p></div>
+    <div class="card"><h3>Family and guardians</h3><p>Follow health readings, receive warning and emergency notifications, and view the camera according to permissions.</p></div>
+    <div class="card"><h3>Doctors</h3><p>Review relevant medical information for linked patients and add recommendations and notes. Doctors do not access the live camera or receive fall alerts, and are not responsible for real-time emergency response.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ 5. HOW IT WORKS ============ -->
+<section id="how" style="background:var(--surface)"><div class="wrap">
+  <h2>How it works</h2>
+  <div class="steps">
+    <div class="step"><div><b>Collect</b><p>The bracelet gathers health measurements.</p></div></div>
+    <div class="step"><div><b>Observe</b><p>The camera component analyzes visual information for potential safety concerns.</p></div></div>
+    <div class="step"><div><b>Identify</b><p>The system flags abnormal readings or potentially dangerous situations.</p></div></div>
+    <div class="step"><div><b>Notify</b><p>Relevant alerts reach the elderly user and authorized guardians.</p></div></div>
+    <div class="step"><div><b>Respond</b><p>Family members check the situation and take appropriate action.</p></div></div>
+    <div class="step"><div><b>Follow up</b><p>Doctors review relevant medical information and provide recommendations.</p></div></div>
+  </div>
+
+  <h3 style="margin-top:56px;font-size:1.5rem">Alert levels</h3>
+  <div class="grid g3">
+    <div class="card lv n"><h3>Normal</h3><p>The system is operating normally and no concerns are detected.</p></div>
+    <div class="card lv w"><h3>Warning</h3><p>Readings or behavior suggest a potential concern. The elderly user and guardians are notified.</p></div>
+    <div class="card lv e"><h3>Emergency</h3><p>A potentially serious situation is detected. The user may be asked to confirm they are okay. If they ask for help or do not respond within a defined period, the alert escalates to family members.</p></div>
+  </div>
+  <p class="note" style="margin-top:24px">E-Guard is designed to support early awareness and human intervention. It does not diagnose conditions and does not replace medical professionals or emergency services.</p>
+</div></section>
+
+<!-- ============ 7. FEATURES ============ -->
+<section id="features"><div class="wrap">
+  <h2>Key features</h2>
+  <p class="lead">Planned capabilities of the E-Guard system. Features are being developed in stages.</p>
+  <div class="grid g3" id="featureGrid"></div>
+</div></section>
+
+<!-- ============ 8/9. TECH + ADVANTAGE ============ -->
+<section id="tech" class="band"><div class="wrap">
+  <h2>Technology stack</h2>
+  <p class="lead">Final hardware, algorithms and infrastructure choices are still being evaluated.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Flutter &amp; Dart</h3><p>Cross-platform mobile application.</p></div>
+    <div class="card"><h3>AI &amp; computer vision</h3><p>Intelligent monitoring for safety awareness.</p></div>
+    <div class="card"><h3>IoT &amp; embedded systems</h3><p>Wearable and sensor integration.</p></div>
+    <div class="card"><h3>Backend &amp; cloud infrastructure</h3><p>Data communication and system integration.</p></div>
+  </div>
+  <h2 style="margin-top:64px">Why E-Guard</h2>
+  <p class="lead">Many solutions focus on a single aspect of elderly care. E-Guard aims to bring these together:</p>
+  <div class="grid g3">
+    <div class="card"><p>Health monitoring through wearable technology</p></div>
+    <div class="card"><p>Camera-based safety monitoring</p></div>
+    <div class="card"><p>AI-assisted detection of potential emergencies</p></div>
+    <div class="card"><p>Family-focused notifications and communication</p></div>
+    <div class="card"><p>Doctor-supported medical follow-up</p></div>
+  </div>
+</div></section>
+
+<!-- ============ 10. VISION ============ -->
+<section id="vision"><div class="wrap">
+  <h2>Our vision</h2>
+  <p class="lead">We see a future where growing older at home feels safer for the person and calmer for the family. E-Guard is our first step toward that: a connected, privacy-aware system that supports people instead of replacing them.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Who we serve</h3><p>Elderly people living independently, their families and guardians, healthcare professionals, and elderly care organizations.</p></div>
+    <div class="card"><h3>Privacy first</h3><p>Access to health data and cameras is designed around permissions each family controls.</p></div>
+    <div class="card"><h3>Open to partners</h3><p>We welcome conversations with competitions, mentors, healthcare providers and potential partners.</p></div>
+  </div>
+</div></section>
+
+<!-- ============ TEAM ============ -->
+<section id="team" style="background:var(--surface)"><div class="wrap">
+  <h2>Team</h2>
+  <p class="lead">The people behind E-Guard.</p>
+  <div class="grid g3" id="teamGrid"></div>
+</div></section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact"><div class="wrap">
+  <h2>Contact us</h2>
+  <p class="lead">Interested in E-Guard as a judge, mentor, partner or investor? Send us a message.</p>
+  <div class="grid g2">
+    <form id="cf">
+      <div><label for="n">Name</label><input id="n" required autocomplete="name"></div>
+      <div><label for="e">Email</label><input id="e" type="email" required autocomplete="email"></div>
+      <div><label for="m">Message</label><textarea id="m" rows="5" required></textarea></div>
+      <button class="btn" type="submit">Send message</button>
+    </form>
+    <div class="card"><h3>Details</h3><p>Email: <a id="mailLink" href="#"></a></p><p style="margin-top:10px">University / Faculty: <span id="uni"></span></p><p style="margin-top:10px">Sending opens your email app with the message ready to send.</p></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <div><strong style="color:#fff">E-Guard</strong><br>Smarter Care. Safer Living.</div>
+  <div><a href="#about">About</a><a href="#solution">Solution</a><a href="#team">Team</a><a href="#contact">Contact</a></div>
+  <div style="max-width:420px">E-Guard is currently under development. It is not a commercially available product and is not a medical device.<br>© <span id="yr"></span> E-Guard Team</div>
+</div></footer>
+
+<script>
+/* ============ EDIT HERE: contact, features, team ============ */
+const CONTACT = { email: "eguardproject@gmail.com", university: "6th of October University – Information Systems & Computer Science" };
+
+const FEATURES = [
+  ["Smart wearable monitoring","Health readings collected by a wrist-worn bracelet.","M7 3h10v18H7zM9 12h2l1-2 1 4 1-2h1","Planned"],
+  ["AI-assisted fall detection","Designed to help flag possible falls.","M12 4a2 2 0 1 0 0 .1M8 21l3-8-3-3 4-3 3 4 3 1","Planned"],
+  ["Intelligent camera monitoring","Spots unusual movement or inactivity.","M3 7h13v10H3zM16 11l5-3v8l-5-3","Planned"],
+  ["Real-time notifications","Timely alerts to the user and guardians.","M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4","In development"],
+  ["Emergency alert management","Warning and emergency levels with escalation.","M12 3 2 20h20zM12 10v4M12 17v.5","In development"],
+  ["Family connectivity","Keeps approved relatives informed.","M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20c0-4 3-6 6-6s6 2 6 6M17 8a2.5 2.5 0 1 1 0 5M21 19c0-3-2-5-4-5","In development"],
+  ["Doctor recommendations","Doctors add notes and advice.","M5 4h14v16H5zM12 8v8M8 12h8","In development"],
+  ["Medical history management","Keeps relevant records in one place.","M6 3h9l4 4v14H6zM9 12h7M9 16h7","In development"],
+  ["Privacy-aware access control","Each role sees only what it is permitted to.","M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6zM9 12l2 2 4-4","Planned"]
+];
+
+const TEAM = [   // add "photo": "data:image/..." or a URL to show a picture
+  { name:"Mohannad Sameh Hassan Abdelbaqee", role:"Embedded Systems", bio:"Works on the wearable bracelet and sensor integration." },
+  { name:"Youssef Mohamed Hassan Mohamed", role:"Flutter Development", bio:"Builds the E-Guard mobile application." },
+  { name:"Youssef Montaser Mahmoud", role:"Flutter Development", bio:"Builds the E-Guard mobile application." },
+  { name:"Salma Ahmed Attia Asaker", role:"Backend Development", bio:"Works on data communication and system integration." },
+  { name:"Safa Mahmoud Abdaljwad", role:"Backend Development", bio:"Works on data communication and system integration." },
+  { name:"Sakina Mohammed Alahmad", role:"Artificial Intelligence", bio:"Works on AI-assisted monitoring and detection." },
+  { name:"Salma Ahmed Ramadan", role:"Artificial Intelligence", bio:"Works on AI-assisted monitoring and detection." },
+  { name:"Rahaf Mohamed Abdullah", role:"Artificial Intelligence", bio:"Works on AI-assisted monitoring and detection." }
+];
+
+/* ============ rendering (no need to edit) ============ */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById("featureGrid").innerHTML=FEATURES.map(f=>`<div class="card"><div class="ico"><svg viewBox="0 0 24 24"><path d="${f[2]}"/></svg></div><h3>${esc(f[0])}</h3><p>${esc(f[1])}</p><span class="tag">${esc(f[3])}</span></div>`).join("");
+document.getElementById("teamGrid").innerHTML=TEAM.map(t=>`<div class="card"><div class="avatar">${t.photo?`<img src="${esc(t.photo)}" alt="${esc(t.name)}">`:esc(t.name.trim()[0]||"E")}</div><h3>${esc(t.name)}</h3><p><strong>${esc(t.role)}</strong></p><p style="margin-top:6px">${esc(t.bio)}</p></div>`).join("");
+const ml=document.getElementById("mailLink");ml.href="mailto:"+CONTACT.email;ml.textContent=CONTACT.email;
+document.getElementById("uni").textContent=CONTACT.university;
+document.getElementById("yr").textContent=new Date().getFullYear();
+document.getElementById("cf").addEventListener("submit",e=>{e.preventDefault();
+  const b="Name: "+n.value+"\nEmail: "+document.getElementById("e").value+"\n\n"+m.value;
+  location.href="mailto:"+CONTACT.email+"?subject="+encodeURIComponent("E-Guard inquiry from "+n.value)+"&body="+encodeURIComponent(b);});
+const menu=document.getElementById("menu"),links=document.getElementById("links");
+menu.addEventListener("click",()=>{const o=links.classList.toggle("open");menu.setAttribute("aria-expanded",o)});
+links.addEventListener("click",()=>{links.classList.remove("open");menu.setAttribute("aria-expanded",false)});
+</script>
+</body>
+</html>
